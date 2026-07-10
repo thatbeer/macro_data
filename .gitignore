@@ -1,7 +1,7 @@
 __pycache__/
 *.egg-info/
 .env
-data/
+data/*
 !data/.gitkeep
 .pytest_cache/
 build/
