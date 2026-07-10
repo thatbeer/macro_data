@@ -26,6 +26,10 @@ Each run only fetches rows newer than what is already stored. Failing
 series are reported as `"failed: ..."` in the returned summary and never
 block other series.
 
+See [`notebooks/data_gathering_demo.ipynb`](notebooks/data_gathering_demo.ipynb)
+for a walkthrough: inspecting the catalog, fetching from each source, loading
+and plotting series, and re-running updates incrementally.
+
 ## Adding a series
 
 Add an entry to `catalog.yaml` — no code needed:
