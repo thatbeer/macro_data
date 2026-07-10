@@ -31,6 +31,11 @@ See [`notebooks/data_gathering_demo.ipynb`](notebooks/data_gathering_demo.ipynb)
 for a walkthrough: inspecting the catalog, fetching from each source, loading
 and plotting series, and re-running updates incrementally.
 
+For USD/THB trend analysis (moving averages, 52-week range, volatility)
+alongside the US Dollar Index and an equal-weighted Baht Strength Index
+proxy, see
+[`notebooks/usd_thb_trend_and_indices.ipynb`](notebooks/usd_thb_trend_and_indices.ipynb).
+
 For full OHLCV (open/high/low/close/volume) bars — which don't fit the
 single-`value` canonical schema above — see
 [`notebooks/fx_ohlcv_query.ipynb`](notebooks/fx_ohlcv_query.ipynb). It queries

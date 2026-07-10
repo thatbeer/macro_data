@@ -26,6 +26,22 @@ series:
     source: yahoo
     ticker: "^SET.BK"
     name: "SET index (Thailand)"
+  - id: usd_dxy
+    source: yahoo
+    ticker: "DX-Y.NYB"
+    name: "US Dollar Index (ICE)"
+  - id: eur_thb
+    source: yahoo
+    ticker: "EURTHB=X"
+    name: "EUR/THB exchange rate"
+  - id: jpy_thb
+    source: yahoo
+    ticker: "JPYTHB=X"
+    name: "JPY/THB exchange rate"
+  - id: gbp_thb
+    source: yahoo
+    ticker: "GBPTHB=X"
+    name: "GBP/THB exchange rate"
 
   # --- World Bank (no key) ---
   - id: th_gdp_usd
