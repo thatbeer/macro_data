@@ -1,0 +1,25 @@
+[project]
+name = "macro-data"
+version = "0.1.0"
+description = "Local macro-economics data store: FX, commodities, indices, indicators"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0",
+    "requests>=2.31",
+    "PyYAML>=6.0",
+    "python-dotenv>=1.0",
+    "yfinance>=0.2.40",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["macro_data", "macro_data.sources"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
