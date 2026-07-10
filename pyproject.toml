@@ -13,6 +13,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+notebook = ["matplotlib>=3.8", "ipykernel>=6.29", "nbconvert>=7.16"]
 
 [build-system]
 requires = ["setuptools>=68"]

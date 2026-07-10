@@ -7,8 +7,9 @@ files under `data/`, one file per series.
 ## Setup
 
 ```bash
-pip install -e .[dev]
-copy .env.example .env   # then fill in FRED_API_KEY / BOT_CLIENT_ID (optional)
+uv venv
+uv pip install -e ".[dev,notebook]"   # dev = pytest, notebook = matplotlib/jupyter for the demo notebook
+copy .env.example .env                # then fill in FRED_API_KEY / BOT_CLIENT_ID (optional)
 ```
 
 ## Usage
