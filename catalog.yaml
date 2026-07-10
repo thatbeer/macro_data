@@ -42,6 +42,22 @@ series:
     source: yahoo
     ticker: "GBPTHB=X"
     name: "GBP/THB exchange rate"
+  - id: us_3m_yield
+    source: yahoo
+    ticker: "^IRX"
+    name: "US 13-week Treasury bill yield (%)"
+  - id: us_5y_yield
+    source: yahoo
+    ticker: "^FVX"
+    name: "US 5-year Treasury yield (%)"
+  - id: us_10y_yield
+    source: yahoo
+    ticker: "^TNX"
+    name: "US 10-year Treasury yield (%)"
+  - id: us_30y_yield
+    source: yahoo
+    ticker: "^TYX"
+    name: "US 30-year Treasury yield (%)"
 
   # --- World Bank (no key) ---
   - id: th_gdp_usd
@@ -54,6 +70,46 @@ series:
     indicator: FP.CPI.TOTL.ZG
     country: THA
     name: "Thailand inflation, CPI (annual %)"
+  - id: th_unemployment
+    source: worldbank
+    indicator: SL.UEM.TOTL.ZS
+    country: THA
+    name: "Thailand unemployment rate (% of labor force)"
+  - id: th_gov_debt_gdp
+    source: worldbank
+    indicator: GC.DOD.TOTL.GD.ZS
+    country: THA
+    name: "Thailand central government debt (% of GDP)"
+  - id: th_current_account_gdp
+    source: worldbank
+    indicator: BN.CAB.XOKA.GD.ZS
+    country: THA
+    name: "Thailand current account balance (% of GDP)"
+  - id: us_gdp_usd
+    source: worldbank
+    indicator: NY.GDP.MKTP.CD
+    country: USA
+    name: "US GDP (current US$)"
+  - id: us_inflation
+    source: worldbank
+    indicator: FP.CPI.TOTL.ZG
+    country: USA
+    name: "US inflation, CPI (annual %)"
+  - id: us_unemployment
+    source: worldbank
+    indicator: SL.UEM.TOTL.ZS
+    country: USA
+    name: "US unemployment rate (% of labor force)"
+  - id: us_gov_debt_gdp
+    source: worldbank
+    indicator: GC.DOD.TOTL.GD.ZS
+    country: USA
+    name: "US federal government debt (% of GDP)"
+  - id: us_current_account_gdp
+    source: worldbank
+    indicator: BN.CAB.XOKA.GD.ZS
+    country: USA
+    name: "US current account balance (% of GDP)"
 
   # --- FRED (needs FRED_API_KEY) ---
   - id: us_cpi

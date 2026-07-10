@@ -36,6 +36,11 @@ alongside the US Dollar Index and an equal-weighted Baht Strength Index
 proxy, see
 [`notebooks/usd_thb_trend_and_indices.ipynb`](notebooks/usd_thb_trend_and_indices.ipynb).
 
+For the US Treasury yield curve (including the 10Y-3M spread, a classic
+recession indicator) and a US-vs-Thailand comparison across GDP, inflation,
+unemployment, government debt, and current account balance, see
+[`notebooks/bonds_and_economic_indicators.ipynb`](notebooks/bonds_and_economic_indicators.ipynb).
+
 For full OHLCV (open/high/low/close/volume) bars — which don't fit the
 single-`value` canonical schema above — see
 [`notebooks/fx_ohlcv_query.ipynb`](notebooks/fx_ohlcv_query.ipynb). It queries
