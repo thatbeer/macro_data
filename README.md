@@ -31,6 +31,13 @@ See [`notebooks/data_gathering_demo.ipynb`](notebooks/data_gathering_demo.ipynb)
 for a walkthrough: inspecting the catalog, fetching from each source, loading
 and plotting series, and re-running updates incrementally.
 
+For full OHLCV (open/high/low/close/volume) bars — which don't fit the
+single-`value` canonical schema above — see
+[`notebooks/fx_ohlcv_query.ipynb`](notebooks/fx_ohlcv_query.ipynb). It queries
+Yahoo Finance directly for spot FX and currency futures, contrasts spot FX's
+always-zero volume (OTC, no consolidated tape) against real futures volume,
+and renders a candlestick + volume chart.
+
 ## Adding a series
 
 Add an entry to `catalog.yaml` — no code needed:
