@@ -1,0 +1,59 @@
+# Series catalog: add an entry here to start collecting a new series.
+# Keys other than id/source/name are passed to the source fetcher.
+series:
+  # --- Yahoo Finance (no key) ---
+  - id: usd_thb
+    source: yahoo
+    ticker: "THB=X"
+    name: "USD/THB exchange rate"
+  - id: eur_usd
+    source: yahoo
+    ticker: "EURUSD=X"
+    name: "EUR/USD exchange rate"
+  - id: gold_usd
+    source: yahoo
+    ticker: "GC=F"
+    name: "Gold futures (USD/oz)"
+  - id: brent_oil
+    source: yahoo
+    ticker: "BZ=F"
+    name: "Brent crude futures (USD/bbl)"
+  - id: sp500
+    source: yahoo
+    ticker: "^GSPC"
+    name: "S&P 500 index"
+  - id: set_index
+    source: yahoo
+    ticker: "^SET.BK"
+    name: "SET index (Thailand)"
+
+  # --- World Bank (no key) ---
+  - id: th_gdp_usd
+    source: worldbank
+    indicator: NY.GDP.MKTP.CD
+    country: THA
+    name: "Thailand GDP (current US$)"
+  - id: th_inflation
+    source: worldbank
+    indicator: FP.CPI.TOTL.ZG
+    country: THA
+    name: "Thailand inflation, CPI (annual %)"
+
+  # --- FRED (needs FRED_API_KEY) ---
+  - id: us_cpi
+    source: fred
+    series: CPIAUCSL
+    name: "US CPI (all urban consumers)"
+  - id: fed_funds_rate
+    source: fred
+    series: FEDFUNDS
+    name: "US federal funds effective rate"
+
+  # --- Bank of Thailand (needs BOT_CLIENT_ID) ---
+  - id: usd_thb_bot
+    source: bot
+    url: "https://apigw1.bot.or.th/bot/public/Stat-ExchangeRate/v2/DAILY_AVG_EXG_RATE/"
+    value_field: mid_rate
+    query:
+      currency: USD
+    name: "USD/THB daily average reference rate (BOT)"

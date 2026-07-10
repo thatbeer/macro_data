@@ -65,6 +65,8 @@ def _run(configs: list[SeriesConfig], data_dir: Path) -> dict[str, str]:
 def _update_series(source, cfg: SeriesConfig, data_dir: Path) -> str:
     last = store.last_date(data_dir, cfg.source, cfg.id)
     start = None if last is None else last + pd.Timedelta(days=1)
+    if start is not None and start > pd.Timestamp.today().normalize():
+        return "up-to-date"  # already current; a future start date upsets some APIs
     new = source.fetch(cfg, start=start)
     added = store.append(data_dir, cfg.source, cfg.id, new)
     return f"updated ({added} rows)" if added else "up-to-date"

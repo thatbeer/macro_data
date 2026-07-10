@@ -1,0 +1,50 @@
+# Macro Data Store
+
+Collects economics data (FX rates, commodities, indices, macro indicators)
+from FRED, Yahoo Finance, World Bank, and Bank of Thailand into plain CSV
+files under `data/`, one file per series.
+
+## Setup
+
+```bash
+pip install -e .[dev]
+copy .env.example .env   # then fill in FRED_API_KEY / BOT_CLIENT_ID (optional)
+```
+
+## Usage
+
+```python
+from macro_data import update_all, update, load, list_series
+
+update_all()          # fetch everything in catalog.yaml (incremental)
+update("yahoo")       # or just one source
+
+df = load("usd_thb")  # date-indexed pandas DataFrame with a 'value' column
+```
+
+Each run only fetches rows newer than what is already stored. Failing
+series are reported as `"failed: ..."` in the returned summary and never
+block other series.
+
+## Adding a series
+
+Add an entry to `catalog.yaml` — no code needed:
+
+```yaml
+  - id: my_series
+    source: yahoo          # yahoo | fred | worldbank | bot
+    ticker: "CL=F"         # source-specific params
+    name: "WTI crude futures"
+```
+
+## Adding a source
+
+1. Create `macro_data/sources/<name>.py` with a `BaseSource` subclass whose
+   `fetch(cfg, start)` returns a DataFrame via `schema.normalize()`.
+2. Register the class in `SOURCES` in `macro_data/pipeline.py`.
+3. Add mocked-API tests in `tests/test_<name>.py`.
+
+## Data format
+
+`data/<source>/<series_id>.csv` with columns `date,value` (ISO dates).
+Series metadata (name, tickers, units) lives in `catalog.yaml`.

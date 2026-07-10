@@ -83,6 +83,25 @@ def test_load_unknown_series_raises(env):
         pipeline.load("nope", **env)
 
 
+def test_update_skips_fetch_when_current_through_today(env, monkeypatch):
+    class NeverCalledSource(BaseSource):
+        name = "fake_current"
+
+        def fetch(self, cfg, start=None):
+            raise AssertionError("fetch must not be called for an up-to-date series")
+
+    monkeypatch.setitem(pipeline.SOURCES, "fake_current", NeverCalledSource)
+    env["catalog_path"].write_text(
+        "series:\n  - {id: cur, source: fake_current}\n", encoding="utf-8"
+    )
+    today = pd.Timestamp.today().normalize()
+    seeded = schema.normalize(pd.DataFrame([(today, 1.0)], columns=["date", "value"]))
+    store.append(env["data_dir"], "fake_current", "cur", seeded)
+
+    result = pipeline.update_all(**env)
+    assert result["cur"] == "up-to-date"
+
+
 def test_public_api_exports():
     import macro_data
 
