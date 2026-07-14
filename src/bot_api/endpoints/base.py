@@ -23,7 +23,9 @@ class Endpoint:
     `"Stat-ExchangeRate/v2"`) and `key_attr` (which `BOTClient` attribute holds
     the subscription key for this service's product — defaults to `"api_key"`),
     and expose one method per concrete endpoint, each calling
-    `self._request(endpoint, params)`.
+    `self._request(endpoint, params)`. A namespace whose response isn't a
+    `data_detail` time series (e.g. `PolicyRateEndpoint`) can call
+    `self._resolve_key()` directly instead of `self._request()`.
     """
 
     service: str = ""
@@ -32,13 +34,7 @@ class Endpoint:
     def __init__(self, client: "BOTClient"):
         self._client = client
 
-    def _request(
-        self,
-        endpoint: str,
-        params: dict,
-        return_json: bool = False,
-        date_field: str = "period",
-    ) -> pd.DataFrame | dict:
+    def _resolve_key(self) -> str:
         api_key = getattr(self._client, self.key_attr)
         if not api_key:
             env_var = _ENV_VAR_BY_KEY_ATTR[self.key_attr]
@@ -46,6 +42,16 @@ class Endpoint:
                 f"BOT API key not set for '{self.service}': pass {self.key_attr}= to "
                 f"BOTClient() or set {env_var} (see .env.example)"
             )
+        return api_key
+
+    def _request(
+        self,
+        endpoint: str,
+        params: dict,
+        return_json: bool = False,
+        date_field: str = "period",
+    ) -> pd.DataFrame | dict:
+        api_key = self._resolve_key()
         payload = self._client.get(f"{self.service}/{endpoint}/", params=params, api_key=api_key)
         if return_json:
             return payload
