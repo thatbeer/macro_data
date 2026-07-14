@@ -163,7 +163,7 @@ def test_exchange_return_json_gives_raw_payload():
 
 
 def test_interest_namespace_builds_correct_path():
-    bot = BOTClient(api_key="client-123")
+    bot = BOTClient(interest_key="client-123")
     out = bot.interest.daily("2024-01-01", "2024-01-31")
 
     assert CAPTURED["url"] == "https://gateway.api.bot.or.th/LoanRate/v2/loan_rate/"
@@ -172,7 +172,7 @@ def test_interest_namespace_builds_correct_path():
 
 
 def test_interest_avg_loan_rate_builds_correct_path():
-    bot = BOTClient(api_key="client-123")
+    bot = BOTClient(interest_key="client-123")
     out = bot.interest.avg_loan_interest("2024-01-01", "2024-01-31")
 
     assert CAPTURED["url"] == "https://gateway.api.bot.or.th/LoanRate/v2/avg_loan_rate/"
@@ -181,7 +181,7 @@ def test_interest_avg_loan_rate_builds_correct_path():
 
 
 def test_bond_auction_namespace_builds_correct_path():
-    bot = BOTClient(api_key="client-123")
+    bot = BOTClient(bond_auction_key="client-123")
     out = bot.bond_auction.auction("2017-01-01", "2017-12-31")
 
     assert CAPTURED["url"] == "https://gateway.api.bot.or.th/BondAuction/bond_auction_v2/"
@@ -191,7 +191,7 @@ def test_bond_auction_namespace_builds_correct_path():
 
 
 def test_bond_auction_return_json_gives_raw_payload():
-    bot = BOTClient(api_key="client-123")
+    bot = BOTClient(bond_auction_key="client-123")
     out = bot.bond_auction.auction("2017-01-01", "2017-12-31", return_json=True)
     assert out["result"]["api"] == "Bond Auction"
 
@@ -220,3 +220,37 @@ def test_reference_rate_return_json_gives_raw_payload():
     bot = BOTClient(api_key="client-123")
     out = bot.reference_rate.daily("2024-01-01", "2024-01-31", return_json=True)
     assert out["result"]["success"] is True
+
+
+@pytest.mark.parametrize(
+    "namespace_attr, method_name, call_args, env_var",
+    [
+        ("exchange", "daily", ("2024-01-01", "2024-01-31"), "BOT_CLIENT_ID"),
+        ("reference_rate", "daily", ("2024-01-01", "2024-01-31"), "BOT_CLIENT_ID"),
+        ("interest", "daily", ("2024-01-01", "2024-01-31"), "BOT_CLIENT_ID_INTEREST"),
+        ("bond_auction", "auction", ("2017-01-01", "2017-12-31"), "BOT_CLIENT_ID_BOND_AUCTION"),
+    ],
+)
+def test_missing_key_raises_per_namespace(monkeypatch, namespace_attr, method_name, call_args, env_var):
+    for var in ["BOT_CLIENT_ID", "BOT_CLIENT_ID_INTEREST", "BOT_CLIENT_ID_BOND_AUCTION"]:
+        monkeypatch.delenv(var, raising=False)
+    bot = BOTClient()
+    method = getattr(getattr(bot, namespace_attr), method_name)
+    with pytest.raises(ValueError, match=env_var):
+        method(*call_args)
+
+
+def test_each_namespace_uses_its_own_key():
+    bot = BOTClient(api_key="exchange-key", interest_key="interest-key", bond_auction_key="bond-key")
+
+    bot.exchange.daily("2024-01-01", "2024-01-31")
+    assert CAPTURED["headers"]["Authorization"] == "exchange-key"
+
+    bot.reference_rate.daily("2024-01-01", "2024-01-31")
+    assert CAPTURED["headers"]["Authorization"] == "exchange-key"
+
+    bot.interest.daily("2024-01-01", "2024-01-31")
+    assert CAPTURED["headers"]["Authorization"] == "interest-key"
+
+    bot.bond_auction.auction("2017-01-01", "2017-12-31")
+    assert CAPTURED["headers"]["Authorization"] == "bond-key"
