@@ -8,6 +8,7 @@ from typing import Any
 import pandas as pd
 import requests
 
+from .endpoints.bibor import BiborEndpoint
 from .endpoints.bond_auction import BondAuctionEndpoint
 from .endpoints.deposit_rate import DepositRateEndpoint
 from .endpoints.exchange_rate import ExchangeRateEndpoint
@@ -36,6 +37,7 @@ class BOTClient:
         bot.spot_rate.daily(start_period, end_period)
         bot.swap_point.daily(start_period, end_period)
         bot.interbank_txn_rate.daily(start_period, end_period)
+        bot.bibor.daily(start_period, end_period)
 
     BOT's developer portal issues a separate subscription key per API
     product, so this client resolves three independent keys instead of one:
@@ -43,7 +45,7 @@ class BOTClient:
     - `api_key` (env `BOT_CLIENT_ID`) -> `exchange`, `reference_rate`
     - `interest_key` (env `BOT_CLIENT_ID_INTEREST`) -> `interest`,
       `thb_implied_rate`, `external_interest_rate`, `deposit_rate`,
-      `spot_rate`, `swap_point`, `interbank_txn_rate` (all under BOT's
+      `spot_rate`, `swap_point`, `interbank_txn_rate`, `bibor` (all under BOT's
       "Interest Rates" subscription plan alongside LoanRate)
     - `bond_auction_key` (env `BOT_CLIENT_ID_BOND_AUCTION`) -> `bond_auction`
 
@@ -77,6 +79,7 @@ class BOTClient:
         self.spot_rate = SpotRateEndpoint(self)
         self.swap_point = SwapPointEndpoint(self)
         self.interbank_txn_rate = InterbankTransactionRateEndpoint(self)
+        self.bibor = BiborEndpoint(self)
 
     def get(
         self, path: str, params: dict[str, Any] | None = None, api_key: str | None = None

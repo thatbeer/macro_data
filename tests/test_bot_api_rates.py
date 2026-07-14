@@ -135,6 +135,31 @@ def _interbank_transaction_rate_payload():
     }
 
 
+def _bibor_payload():
+    return {
+        "result": {
+            "success": True,
+            "data": {
+                "data_detail": [
+                    {
+                        "period": "2024-01-02",
+                        "bankname_th": "ธนาคารกรุงเทพ จำกัด (มหาชน)",
+                        "bankname_eng": "Bangkok Bank",
+                        "bibor_o_n": "2.50000",
+                        "bibor_1_week": "2.52000",
+                        "bibor_1_month": "2.55000",
+                        "bibor_2_month": "2.60000",
+                        "bibor_3_month": "2.65000",
+                        "bibor_6_month": "2.75000",
+                        "bibor_9_month": "",
+                        "bibor_1_year": "2.85000",
+                    },
+                ]
+            },
+        }
+    }
+
+
 def fake_get(url, headers=None, params=None, timeout=None):
     CAPTURED.update(url=url, headers=headers, params=params)
     if "Stat-ThaiBahtImpliedInterestRate" in url:
@@ -149,6 +174,8 @@ def fake_get(url, headers=None, params=None, timeout=None):
         return FakeResponse(_swap_point_payload())
     if "Stat-InterbankTransactionRate" in url:
         return FakeResponse(_interbank_transaction_rate_payload())
+    if "BIBOR" in url:
+        return FakeResponse(_bibor_payload())
     raise AssertionError(f"unexpected URL in test: {url}")
 
 
@@ -219,3 +246,13 @@ def test_interbank_transaction_rate_builds_correct_path():
     )
     assert CAPTURED["params"] == {"start_period": "2024-01-01", "end_period": "2024-01-31"}
     assert list(out["weighted_average_interest_rate"]) == ["1.24"]
+
+
+def test_bibor_builds_correct_path():
+    bot = BOTClient(interest_key="client-123")
+    out = bot.bibor.daily("2024-01-01", "2024-01-31")
+
+    assert CAPTURED["url"] == "https://gateway.api.bot.or.th/BIBOR/v2/bibor_rate/"
+    assert CAPTURED["params"] == {"start_period": "2024-01-01", "end_period": "2024-01-31"}
+    # column confirmed present in Step 1's real live response
+    assert list(out["bibor_1_month"]) == ["2.55000"]
