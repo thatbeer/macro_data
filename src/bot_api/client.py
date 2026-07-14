@@ -9,9 +9,15 @@ import pandas as pd
 import requests
 
 from .endpoints.bond_auction import BondAuctionEndpoint
+from .endpoints.deposit_rate import DepositRateEndpoint
 from .endpoints.exchange_rate import ExchangeRateEndpoint
+from .endpoints.external_interest_rate import ExternalInterestRateEndpoint
+from .endpoints.interbank_transaction_rate import InterbankTransactionRateEndpoint
 from .endpoints.interest_rate import InterestRateEndpoint
 from .endpoints.reference_rate import ReferenceRateEndpoint
+from .endpoints.spot_rate import SpotRateEndpoint
+from .endpoints.swap_point import SwapPointEndpoint
+from .endpoints.thb_implied_rate import ThaiBahtImpliedRateEndpoint
 
 BASE_URL = "https://gateway.api.bot.or.th/"
 
@@ -24,12 +30,21 @@ class BOTClient:
         bot.interest.daily(start_period, end_period)
         bot.bond_auction.auction(start_period, end_period)
         bot.reference_rate.daily(start_period, end_period)
+        bot.thb_implied_rate.daily(start_period, end_period)
+        bot.external_interest_rate.daily(start_period, end_period)
+        bot.deposit_rate.daily(start_period, end_period)
+        bot.spot_rate.daily(start_period, end_period)
+        bot.swap_point.daily(start_period, end_period)
+        bot.interbank_txn_rate.daily(start_period, end_period)
 
     BOT's developer portal issues a separate subscription key per API
     product, so this client resolves three independent keys instead of one:
 
     - `api_key` (env `BOT_CLIENT_ID`) -> `exchange`, `reference_rate`
-    - `interest_key` (env `BOT_CLIENT_ID_INTEREST`) -> `interest`
+    - `interest_key` (env `BOT_CLIENT_ID_INTEREST`) -> `interest`,
+      `thb_implied_rate`, `external_interest_rate`, `deposit_rate`,
+      `spot_rate`, `swap_point`, `interbank_txn_rate` (all under BOT's
+      "Interest Rates" subscription plan alongside LoanRate)
     - `bond_auction_key` (env `BOT_CLIENT_ID_BOND_AUCTION`) -> `bond_auction`
 
     Each may be passed explicitly or left to be read from its environment
@@ -56,6 +71,12 @@ class BOTClient:
         self.interest = InterestRateEndpoint(self)
         self.bond_auction = BondAuctionEndpoint(self)
         self.reference_rate = ReferenceRateEndpoint(self)
+        self.thb_implied_rate = ThaiBahtImpliedRateEndpoint(self)
+        self.external_interest_rate = ExternalInterestRateEndpoint(self)
+        self.deposit_rate = DepositRateEndpoint(self)
+        self.spot_rate = SpotRateEndpoint(self)
+        self.swap_point = SwapPointEndpoint(self)
+        self.interbank_txn_rate = InterbankTransactionRateEndpoint(self)
 
     def get(
         self, path: str, params: dict[str, Any] | None = None, api_key: str | None = None
