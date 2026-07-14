@@ -160,6 +160,23 @@ def _bibor_payload():
     }
 
 
+def _policy_rate_payload():
+    return {
+        "result": {
+            "timestamp": "2026-07-14 19:03:51",
+            "api": "Policy Rate (Percent per annum)",
+            "data": "1.00",
+            "announcement_date": "2026/06/24",
+            "news_text_en": (
+                "On 24 June 2026, the MPC voted unanimously (7-0) to maintain "
+                "the policy rate at 1.00 percent."
+            ),
+            "news_text_th": "วันที่ 24 มิถุนายน 2569 กนง. มีมติเป็นเอกฉันท์ (7-0 เสียง) ให้คงอัตราดอกเบี้ยนโยบายไว้ที่ร้อยละ 1.00 ต่อปี",
+            "effective_datetime": "2026-06-24 14:00:00",
+        }
+    }
+
+
 def fake_get(url, headers=None, params=None, timeout=None):
     CAPTURED.update(url=url, headers=headers, params=params)
     if "Stat-ThaiBahtImpliedInterestRate" in url:
@@ -176,6 +193,8 @@ def fake_get(url, headers=None, params=None, timeout=None):
         return FakeResponse(_interbank_transaction_rate_payload())
     if "BIBOR" in url:
         return FakeResponse(_bibor_payload())
+    if "PolicyRate" in url:
+        return FakeResponse(_policy_rate_payload())
     raise AssertionError(f"unexpected URL in test: {url}")
 
 
@@ -256,3 +275,43 @@ def test_bibor_builds_correct_path():
     assert CAPTURED["params"] == {"start_period": "2024-01-01", "end_period": "2024-01-31"}
     # column confirmed present in Step 1's real live response
     assert list(out["bibor_1_month"]) == ["2.55000"]
+
+
+def test_policy_rate_current_builds_correct_path_and_sends_no_date_params():
+    bot = BOTClient(interest_key="client-123")
+    out = bot.policy_rate.current()
+
+    assert CAPTURED["url"] == "https://gateway.api.bot.or.th/PolicyRate/v3/policy_rate/"
+    assert CAPTURED["params"] == {}
+    assert out["rate"].iloc[0] == "1.00"
+    assert out["announcement_date"].iloc[0] == "2026/06/24"
+    assert out["effective_datetime"].iloc[0] == "2026-06-24 14:00:00"
+
+
+def test_policy_rate_return_json_gives_raw_payload():
+    bot = BOTClient(interest_key="client-123")
+    out = bot.policy_rate.current(return_json=True)
+    assert out["result"]["data"] == "1.00"
+
+
+@pytest.mark.parametrize(
+    "namespace_attr, method_name, call_args",
+    [
+        ("thb_implied_rate", "daily", ("2024-01-01", "2024-01-31")),
+        ("external_interest_rate", "daily", ("2024-01-01", "2024-01-31")),
+        ("deposit_rate", "daily", ("2024-01-01", "2024-01-31")),
+        ("spot_rate", "daily", ("2024-01-01", "2024-01-31")),
+        ("swap_point", "daily", ("2024-01-01", "2024-01-31")),
+        ("interbank_txn_rate", "daily", ("2024-01-01", "2024-01-31")),
+        ("bibor", "daily", ("2024-01-01", "2024-01-31")),
+        ("policy_rate", "current", ()),
+    ],
+)
+def test_missing_interest_key_raises_for_all_new_namespaces(
+    monkeypatch, namespace_attr, method_name, call_args
+):
+    monkeypatch.delenv("BOT_CLIENT_ID_INTEREST", raising=False)
+    bot = BOTClient()
+    method = getattr(getattr(bot, namespace_attr), method_name)
+    with pytest.raises(ValueError, match="BOT_CLIENT_ID_INTEREST"):
+        method(*call_args)
