@@ -44,19 +44,33 @@ sections left for a future namespace if needed).
 
 ## Verification status
 
-Only `series/observations` has been exercised against the live API in this
-repo (`macro_data/sources/fred.py`, working today with a real key per
-`CLAUDE.md`). The other 4 paths/params below come from FRED's published API
-docs (a long-stable, widely-used public API — e.g. the `fredapi` PyPI
-package relies on the same shapes) but a live WebFetch double-check against
-this host returned `403 Forbidden` for *every* URL tried, including
-`series/observations` with a fake key — FRED's WAF appears to block
-non-browser fetch tools outright, independent of key validity, so this
-couldn't be used to confirm or deny the new endpoints the way it worked for
-FMP. **Implementer should do one live smoke test per new method (via
-`requests` directly, or a notebook cell with a real `FRED_API_KEY`) before
-finalizing the mocked test payloads** — same caveat the BOT rate-endpoints
-plan gave for BIBOR.
+**Update (2026-07-15, post-implementation):** all 5 methods now confirmed
+live against the real API with a real `FRED_API_KEY`. Wrapper keys matched
+the coded `response_key` exactly, no corrections needed:
+
+| Method | Live top-level keys returned | Coded `response_key` |
+|---|---|---|
+| `observations("GNPCA")` | `realtime_start, realtime_end, observations` | `observations` ✓ |
+| `info("GNPCA")` | `realtime_start, realtime_end, seriess` | `seriess` ✓ |
+| `search("money stock")` | `realtime_start, realtime_end, order_by, sort_order, count, offset, limit, seriess` | `seriess` ✓ |
+| `categories("GNPCA")` | `categories` | `categories` ✓ |
+| `tags("GNPCA")` | `realtime_start, realtime_end, order_by, sort_order, count, offset, limit, tags` | `tags` ✓ |
+
+`to_dataframe()` conversion also verified end-to-end (e.g. `info("GNPCA")`
+yields a 1-row frame with `id`/`title`/`frequency`/`units` columns;
+`categories("GNPCA")` yields `id=106, name="GDP/GNP", parent_id=18`).
+
+Original pre-implementation note, kept for history: only
+`series/observations` had been exercised against the live API in this repo
+before this client existed (`macro_data/sources/fred.py`, working today
+with a real key per `CLAUDE.md`). The other 4 paths/params were built from
+FRED's published API docs (a long-stable, widely-used public API — e.g.
+the `fredapi` PyPI package relies on the same shapes), and a live WebFetch
+double-check against this host returned `403 Forbidden` for *every* URL
+tried during design — FRED's WAF blocks non-browser fetch tools outright,
+independent of key validity — so the smoke test above had to wait for
+implementation to complete and a real key to become available, per the
+plan's Step 7.
 
 Expected shapes (per FRED docs):
 
