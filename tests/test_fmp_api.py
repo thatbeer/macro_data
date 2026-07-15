@@ -275,3 +275,50 @@ def test_chart_namespace_omits_unset_dates():
     client = FMPClient(api_key="key-123")
     client.chart.historical_eod_light("AAPL")
     assert CAPTURED["params"] == {"symbol": "AAPL", "apikey": "key-123"}
+
+
+@pytest.mark.parametrize(
+    "method_name, path",
+    [
+        ("sma", "simple-moving-average"),
+        ("ema", "exponential-moving-average"),
+        ("dema", "double-exponential-moving-average"),
+        ("tema", "triple-exponential-moving-average"),
+        ("wma", "weighted-moving-average"),
+        ("rsi", "relative-strength-index"),
+        ("adx", "average-directional-index"),
+        ("williams", "williams"),
+        ("standard_deviation", "standard-deviation"),
+    ],
+)
+def test_technical_indicators_namespace_builds_correct_request(method_name, path):
+    PAYLOADS[path] = [{"date": "2024-01-02", "close": 200.0, "sma": 195.0}]
+    client = FMPClient(api_key="key-123")
+    method = getattr(client.technical_indicators, method_name)
+
+    out = method("AAPL", period_length=10, timeframe="1day")
+
+    assert CAPTURED["url"] == f"https://financialmodelingprep.com/stable/{path}"
+    assert CAPTURED["params"] == {
+        "symbol": "AAPL",
+        "periodLength": 10,
+        "timeframe": "1day",
+        "apikey": "key-123",
+    }
+    assert list(out["close"]) == [200.0]
+
+
+def test_technical_indicators_includes_date_range_when_given():
+    PAYLOADS["simple-moving-average"] = [{"date": "2024-01-02", "close": 200.0, "sma": 195.0}]
+    client = FMPClient(api_key="key-123")
+    client.technical_indicators.sma(
+        "AAPL", period_length=10, timeframe="1day", from_date="2024-01-01", to_date="2024-01-31"
+    )
+    assert CAPTURED["params"] == {
+        "symbol": "AAPL",
+        "periodLength": 10,
+        "timeframe": "1day",
+        "from": "2024-01-01",
+        "to": "2024-01-31",
+        "apikey": "key-123",
+    }
