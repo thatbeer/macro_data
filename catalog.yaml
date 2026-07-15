@@ -22,6 +22,18 @@ series:
     source: yahoo
     ticker: "CL=F"
     name: "WTI crude futures (USD/bbl)"
+  - id: silver_usd
+    source: yahoo
+    ticker: "SI=F"
+    name: "Silver futures (USD/oz)"
+  - id: copper_usd
+    source: yahoo
+    ticker: "HG=F"
+    name: "Copper futures (USD/lb)"
+  - id: natural_gas
+    source: yahoo
+    ticker: "NG=F"
+    name: "Natural gas futures (USD/MMBtu)"
   - id: sp500
     source: yahoo
     ticker: "^GSPC"
