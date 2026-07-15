@@ -94,3 +94,39 @@ def test_economics_return_json_gives_raw_payload():
     client = FMPClient(api_key="key-123")
     out = client.economics.treasury_rates(return_json=True)
     assert out == [{"date": "2024-01-02", "year10": 4.5}]
+
+
+@pytest.mark.parametrize(
+    "method_name, path, call_kwargs, expected_params",
+    [
+        ("list", "commodities-list", {}, {}),
+        ("quote", "commodities-quote", {"symbol": "GCUSD"}, {"symbol": "GCUSD"}),
+        ("quote_short", "commodities-quote-short", {"symbol": "GCUSD"}, {"symbol": "GCUSD"}),
+        ("all_quotes", "all-commodities-quotes", {}, {}),
+        (
+            "historical_eod_full",
+            "commodities-historical-price-eod-full",
+            {"symbol": "GCUSD", "from_date": "2024-01-01", "to_date": "2024-01-31"},
+            {"symbol": "GCUSD", "from": "2024-01-01", "to": "2024-01-31"},
+        ),
+        (
+            "historical_eod_light",
+            "commodities-historical-price-eod-light",
+            {"symbol": "GCUSD"},
+            {"symbol": "GCUSD"},
+        ),
+        ("intraday_1min", "commodities-intraday-1-min", {"symbol": "GCUSD"}, {"symbol": "GCUSD"}),
+        ("intraday_5min", "commodities-intraday-5-min", {"symbol": "GCUSD"}, {"symbol": "GCUSD"}),
+        ("intraday_1hour", "commodities-intraday-1-hour", {"symbol": "GCUSD"}, {"symbol": "GCUSD"}),
+    ],
+)
+def test_commodity_namespace_builds_correct_request(method_name, path, call_kwargs, expected_params):
+    PAYLOADS[path] = [{"symbol": "GCUSD", "price": 2400.0}]
+    client = FMPClient(api_key="key-123")
+    method = getattr(client.commodity, method_name)
+
+    out = method(**call_kwargs)
+
+    assert CAPTURED["url"] == f"https://financialmodelingprep.com/stable/{path}"
+    assert CAPTURED["params"] == {**expected_params, "apikey": "key-123"}
+    assert list(out["price"]) == [2400.0]

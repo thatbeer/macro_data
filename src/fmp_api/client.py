@@ -8,6 +8,7 @@ from typing import Any
 import pandas as pd
 import requests
 
+from .endpoints.commodity import CommodityEndpoint
 from .endpoints.economics import EconomicsEndpoint
 
 BASE_URL = "https://financialmodelingprep.com/stable/"
@@ -35,6 +36,7 @@ class FMPClient:
         self.base_url = base_url.rstrip("/") + "/"
         self.timeout = timeout
 
+        self.commodity = CommodityEndpoint(self)
         self.economics = EconomicsEndpoint(self)
 
     def get(self, path: str, params: dict[str, Any] | None = None) -> list | dict:
