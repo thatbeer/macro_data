@@ -8,6 +8,7 @@ from typing import Any
 import pandas as pd
 import requests
 
+from .endpoints.chart import ChartEndpoint
 from .endpoints.commodity import CommodityEndpoint
 from .endpoints.economics import EconomicsEndpoint
 from .endpoints.forex import ForexEndpoint
@@ -39,6 +40,7 @@ class FMPClient:
         self.base_url = base_url.rstrip("/") + "/"
         self.timeout = timeout
 
+        self.chart = ChartEndpoint(self)
         self.commodity = CommodityEndpoint(self)
         self.economics = EconomicsEndpoint(self)
         self.forex = ForexEndpoint(self)

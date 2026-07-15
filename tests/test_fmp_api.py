@@ -236,3 +236,42 @@ def test_quote_namespace_builds_correct_request(method_name, path, call_kwargs, 
     assert CAPTURED["url"] == f"https://financialmodelingprep.com/stable/{path}"
     assert CAPTURED["params"] == {**expected_params, "apikey": "key-123"}
     assert list(out["price"]) == [200.0]
+
+
+@pytest.mark.parametrize(
+    "method_name, path",
+    [
+        ("historical_eod_full", "historical-price-eod-full"),
+        ("historical_eod_light", "historical-price-eod-light"),
+        ("historical_eod_dividend_adjusted", "historical-price-eod-dividend-adjusted"),
+        ("historical_eod_non_split_adjusted", "historical-price-eod-non-split-adjusted"),
+        ("intraday_1min", "intraday-1-min"),
+        ("intraday_5min", "intraday-5-min"),
+        ("intraday_15min", "intraday-15-min"),
+        ("intraday_30min", "intraday-30-min"),
+        ("intraday_1hour", "intraday-1-hour"),
+        ("intraday_4hour", "intraday-4-hour"),
+    ],
+)
+def test_chart_namespace_builds_correct_request(method_name, path):
+    PAYLOADS[path] = [{"symbol": "AAPL", "close": 200.0}]
+    client = FMPClient(api_key="key-123")
+    method = getattr(client.chart, method_name)
+
+    out = method("AAPL", from_date="2024-01-01", to_date="2024-01-31")
+
+    assert CAPTURED["url"] == f"https://financialmodelingprep.com/stable/{path}"
+    assert CAPTURED["params"] == {
+        "symbol": "AAPL",
+        "from": "2024-01-01",
+        "to": "2024-01-31",
+        "apikey": "key-123",
+    }
+    assert list(out["close"]) == [200.0]
+
+
+def test_chart_namespace_omits_unset_dates():
+    PAYLOADS["historical-price-eod-light"] = [{"symbol": "AAPL", "close": 200.0}]
+    client = FMPClient(api_key="key-123")
+    client.chart.historical_eod_light("AAPL")
+    assert CAPTURED["params"] == {"symbol": "AAPL", "apikey": "key-123"}
