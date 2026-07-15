@@ -203,3 +203,36 @@ def test_indexes_namespace_builds_correct_request(method_name, path, call_kwargs
     assert CAPTURED["url"] == f"https://financialmodelingprep.com/stable/{path}"
     assert CAPTURED["params"] == {**expected_params, "apikey": "key-123"}
     assert list(out["price"]) == [5000.0]
+
+
+@pytest.mark.parametrize(
+    "method_name, path, call_kwargs, expected_params",
+    [
+        ("quote", "quote", {"symbol": "AAPL"}, {"symbol": "AAPL"}),
+        ("quote_short", "quote-short", {"symbol": "AAPL"}, {"symbol": "AAPL"}),
+        ("quote_change", "quote-change", {"symbol": "AAPL"}, {"symbol": "AAPL"}),
+        ("batch_quote", "batch-quote", {"symbols": ["AAPL", "MSFT"]}, {"symbols": "AAPL,MSFT"}),
+        ("batch_quote_short", "batch-quote-short", {"symbols": ["AAPL", "MSFT"]}, {"symbols": "AAPL,MSFT"}),
+        ("aftermarket_quote", "aftermarket-quote", {"symbol": "AAPL"}, {"symbol": "AAPL"}),
+        ("aftermarket_trade", "aftermarket-trade", {"symbol": "AAPL"}, {"symbol": "AAPL"}),
+        ("batch_aftermarket_quote", "batch-aftermarket-quote", {"symbols": ["AAPL", "MSFT"]}, {"symbols": "AAPL,MSFT"}),
+        ("batch_aftermarket_trade", "batch-aftermarket-trade", {"symbols": ["AAPL", "MSFT"]}, {"symbols": "AAPL,MSFT"}),
+        ("full_commodities_quotes", "full-commodities-quotes", {}, {}),
+        ("full_cryptocurrency_quotes", "full-cryptocurrency-quotes", {}, {}),
+        ("full_etf_quotes", "full-etf-quotes", {}, {}),
+        ("full_forex_quotes", "full-forex-quotes", {}, {}),
+        ("full_index_quotes", "full-index-quotes", {}, {}),
+        ("full_mutualfund_quotes", "full-mutualfund-quotes", {}, {}),
+        ("full_exchange_quotes", "full-exchange-quotes", {"exchange": "NASDAQ"}, {"exchange": "NASDAQ"}),
+    ],
+)
+def test_quote_namespace_builds_correct_request(method_name, path, call_kwargs, expected_params):
+    PAYLOADS[path] = [{"symbol": "AAPL", "price": 200.0}]
+    client = FMPClient(api_key="key-123")
+    method = getattr(client.quote, method_name)
+
+    out = method(**call_kwargs)
+
+    assert CAPTURED["url"] == f"https://financialmodelingprep.com/stable/{path}"
+    assert CAPTURED["params"] == {**expected_params, "apikey": "key-123"}
+    assert list(out["price"]) == [200.0]
