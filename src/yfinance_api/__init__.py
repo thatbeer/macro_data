@@ -16,8 +16,6 @@ Usage::
     yfc.info.fast_info("AAPL")
 """
 
-from __future__ import annotations
-
 from .client import YFinanceClient
 
 __all__ = ["YFinanceClient"]
