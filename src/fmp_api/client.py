@@ -11,6 +11,7 @@ import requests
 from .endpoints.commodity import CommodityEndpoint
 from .endpoints.economics import EconomicsEndpoint
 from .endpoints.forex import ForexEndpoint
+from .endpoints.indexes import IndexesEndpoint
 
 BASE_URL = "https://financialmodelingprep.com/stable/"
 
@@ -40,6 +41,7 @@ class FMPClient:
         self.commodity = CommodityEndpoint(self)
         self.economics = EconomicsEndpoint(self)
         self.forex = ForexEndpoint(self)
+        self.indexes = IndexesEndpoint(self)
 
     def get(self, path: str, params: dict[str, Any] | None = None) -> list | dict:
         """GET `path` (relative to base_url) with `apikey` merged into the query params."""

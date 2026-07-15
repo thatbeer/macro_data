@@ -166,3 +166,40 @@ def test_forex_namespace_builds_correct_request(method_name, path, call_kwargs, 
     assert CAPTURED["url"] == f"https://financialmodelingprep.com/stable/{path}"
     assert CAPTURED["params"] == {**expected_params, "apikey": "key-123"}
     assert list(out["price"]) == [1.09]
+
+
+@pytest.mark.parametrize(
+    "method_name, path, call_kwargs, expected_params",
+    [
+        ("list", "indexes-list", {}, {}),
+        ("quote", "index-quote", {"symbol": "^GSPC"}, {"symbol": "^GSPC"}),
+        ("quote_short", "index-quote-short", {"symbol": "^GSPC"}, {"symbol": "^GSPC"}),
+        ("all_quotes", "all-index-quotes", {}, {}),
+        (
+            "historical_eod_full",
+            "index-historical-price-eod-full",
+            {"symbol": "^GSPC", "from_date": "2024-01-01", "to_date": "2024-01-31"},
+            {"symbol": "^GSPC", "from": "2024-01-01", "to": "2024-01-31"},
+        ),
+        ("historical_eod_light", "index-historical-price-eod-light", {"symbol": "^GSPC"}, {"symbol": "^GSPC"}),
+        ("intraday_1min", "index-intraday-1-min", {"symbol": "^GSPC"}, {"symbol": "^GSPC"}),
+        ("intraday_5min", "index-intraday-5-min", {"symbol": "^GSPC"}, {"symbol": "^GSPC"}),
+        ("intraday_1hour", "index-intraday-1-hour", {"symbol": "^GSPC"}, {"symbol": "^GSPC"}),
+        ("sp500", "sp-500", {}, {}),
+        ("nasdaq", "nasdaq", {}, {}),
+        ("dow_jones", "dow-jones", {}, {}),
+        ("historical_sp500", "historical-sp-500", {}, {}),
+        ("historical_nasdaq", "historical-nasdaq", {}, {}),
+        ("historical_dow_jones", "historical-dow-jones", {}, {}),
+    ],
+)
+def test_indexes_namespace_builds_correct_request(method_name, path, call_kwargs, expected_params):
+    PAYLOADS[path] = [{"symbol": "^GSPC", "price": 5000.0}]
+    client = FMPClient(api_key="key-123")
+    method = getattr(client.indexes, method_name)
+
+    out = method(**call_kwargs)
+
+    assert CAPTURED["url"] == f"https://financialmodelingprep.com/stable/{path}"
+    assert CAPTURED["params"] == {**expected_params, "apikey": "key-123"}
+    assert list(out["price"]) == [5000.0]
