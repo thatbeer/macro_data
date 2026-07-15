@@ -130,3 +130,39 @@ def test_commodity_namespace_builds_correct_request(method_name, path, call_kwar
     assert CAPTURED["url"] == f"https://financialmodelingprep.com/stable/{path}"
     assert CAPTURED["params"] == {**expected_params, "apikey": "key-123"}
     assert list(out["price"]) == [2400.0]
+
+
+@pytest.mark.parametrize(
+    "method_name, path, call_kwargs, expected_params",
+    [
+        ("list", "forex-list", {}, {}),
+        ("quote", "forex-quote", {"symbol": "EURUSD"}, {"symbol": "EURUSD"}),
+        ("quote_short", "forex-quote-short", {"symbol": "EURUSD"}, {"symbol": "EURUSD"}),
+        ("all_quotes", "all-forex-quotes", {}, {}),
+        (
+            "historical_eod_full",
+            "forex-historical-price-eod-full",
+            {"symbol": "EURUSD", "from_date": "2024-01-01", "to_date": "2024-01-31"},
+            {"symbol": "EURUSD", "from": "2024-01-01", "to": "2024-01-31"},
+        ),
+        (
+            "historical_eod_light",
+            "forex-historical-price-eod-light",
+            {"symbol": "EURUSD"},
+            {"symbol": "EURUSD"},
+        ),
+        ("intraday_1min", "forex-intraday-1-min", {"symbol": "EURUSD"}, {"symbol": "EURUSD"}),
+        ("intraday_5min", "forex-intraday-5-min", {"symbol": "EURUSD"}, {"symbol": "EURUSD"}),
+        ("intraday_1hour", "forex-intraday-1-hour", {"symbol": "EURUSD"}, {"symbol": "EURUSD"}),
+    ],
+)
+def test_forex_namespace_builds_correct_request(method_name, path, call_kwargs, expected_params):
+    PAYLOADS[path] = [{"symbol": "EURUSD", "price": 1.09}]
+    client = FMPClient(api_key="key-123")
+    method = getattr(client.forex, method_name)
+
+    out = method(**call_kwargs)
+
+    assert CAPTURED["url"] == f"https://financialmodelingprep.com/stable/{path}"
+    assert CAPTURED["params"] == {**expected_params, "apikey": "key-123"}
+    assert list(out["price"]) == [1.09]
