@@ -18,6 +18,10 @@ series:
     source: yahoo
     ticker: "BZ=F"
     name: "Brent crude futures (USD/bbl)"
+  - id: wti_oil
+    source: yahoo
+    ticker: "CL=F"
+    name: "WTI crude futures (USD/bbl)"
   - id: sp500
     source: yahoo
     ticker: "^GSPC"
