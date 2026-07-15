@@ -16,57 +16,71 @@ returns the right shape, but every value field is blank. BOT's own response meta
 `notebooks/BOT_query.ipynb` §9 and is a live BOT-side fact, not a client bug — see the
 `bot-api-standalone-client` memory.
 
-This notebook instead uses the catalog's `usd_thb_bot` series — BOT's **daily average
-reference rate** (`mid_rate`, from `Stat-ExchangeRate/v2/DAILY_AVG_EXG_RATE`, the old
-`apigw1.bot.or.th` gateway via `macro_data.sources.bot`). It's the closest live,
-officially-published daily USD/THB figure BOT offers, and it's already wired into
-`catalog.yaml`.
+This notebook was originally going to use the catalog's `usd_thb_bot` series — BOT's
+**daily average reference rate** (`mid_rate`, from `Stat-ExchangeRate/v2/DAILY_AVG_EXG_RATE`,
+the old `apigw1.bot.or.th` gateway via `macro_data.sources.bot`). **Amendment (found
+during implementation, 2026-07-15):** that old gateway is now fully dead — `apigw1.bot.or.th`
+doesn't even resolve in DNS (`NameResolutionError`), not just missing a key. This matches
+a risk flagged in a prior session's memory (BOT announced discontinuing that gateway end
+of 2025). So `usd_thb_bot` can't be fetched at all right now, through no fault of the
+notebook or the package code.
+
+The notebook instead uses the standalone `bot_api` client's `reference_rate.daily()` —
+BOT's **weighted-average interbank reference rate** (THB/USD), on the *new* gateway
+(`gateway.api.bot.or.th`), confirmed live and working in `notebooks/BOT_query.ipynb` §5.
+It's queried the same ad-hoc way that notebook already does, not through
+`catalog.yaml`/`macro_data`.
 
 ## Data sources
 
-| Side | Series | Package call | Status |
+| Side | Series | Call | Status |
 |---|---|---|---|
-| BOT | `usd_thb_bot` (mid_rate) | `macro_data.update("bot")` then `load("usd_thb_bot")` | Not yet fetched — no `data/bot/` folder exists yet |
+| BOT | Weighted-average interbank reference rate (THB/USD) | `bot_api.BOTClient().reference_rate.daily(start, end)` | Confirmed live (`BOT_query.ipynb` §5); needs `BOT_CLIENT_ID` (set in `.env`) |
 | Yahoo | `usd_thb` (`THB=X`) | `macro_data.update("yahoo")` then `load("usd_thb")` | Already fetched (`data/yahoo/usd_thb.csv` exists) |
 
-Both are loaded through the public `macro_data` package surface (`update`, `load`),
-matching the convention already used in `usd_thb_trend_and_indices.ipynb` — not the
-standalone `bot_api` client, which is for ad-hoc exploration only (`BOT_query.ipynb`).
+Yahoo is loaded through the public `macro_data` package surface (`update`, `load`),
+matching the convention in `usd_thb_trend_and_indices.ipynb`. BOT is queried directly via
+the standalone `bot_api` client (`sys.path.insert(0, str(Path("..") / "src"))`,
+`load_dotenv`), matching the convention in `BOT_query.ipynb` — `usd_thb_bot` and
+`macro_data.sources.bot` are not used by this notebook at all now.
 
 ## Notebook sections
 
-1. **Intro (markdown)** — states the comparison purpose and documents upfront why
-   `mid_rate` stands in for "BOT spot rate" (see above), so a reader doesn't wonder why
-   the notebook isn't calling the endpoint literally named `spot_rate`.
-2. **Fetch** — `update("bot")` and `update("yahoo")`, printing the returned status dicts.
-   Both calls run un-guarded (no try/except): `pipeline.py` already isolates per-series
-   failures internally and returns a status string per series id, so a failure surfaces
-   in the printed dict rather than raising.
-3. **Load & restrict to last 1 year** — `load("usd_thb_bot")`, `load("usd_thb")`; each
-   sliced independently to its own last 365 days (`s.index >= s.index.max() -
-   pd.Timedelta(days=365)`), since the two series may not share a last date.
-4. **Align** — inner-join the two frames on date (same technique as `BOT_query.ipynb`
+1. **Intro (markdown)** — states the comparison purpose and documents upfront why the
+   notebook uses BOT's interbank reference rate rather than the literal `spot_rate`
+   endpoint (discontinued) or the catalog's `usd_thb_bot` (old gateway now dead).
+2. **Setup / fetch / load** — construct a `BOTClient`, call `reference_rate.daily(start,
+   end)` for the last 365 days. **Amendment:** `reference_rate.daily()` enforces an
+   undocumented 31-day-per-call limit (HTTP 400 `"Exceed limit period. Limit period is 31
+   days"`, discovered empirically — previously only known to apply to `bond_auction`), so
+   fetching runs in ≤31-day chunks, concatenated. No per-series try/except needed: this
+   is a direct ad-hoc call, matching `BOT_query.ipynb`'s style, not `pipeline.py`'s
+   multi-series isolation (no catalog/store involved on the BOT side). `update("yahoo")`
+   + `load("usd_thb")` for the Yahoo side, sliced to its own last 365 days.
+3. **Align** — inner-join the two frames on date (same technique as `BOT_query.ipynb`
    §5's `ref_daily.merge(daily_usd[...], on="period", how="inner")`). Print how many of
    each source's dates survived the join, since BOT publishes business days only while
    `THB=X` trades most calendar days.
-5. **Comparison table** — last ~10 aligned rows: BOT mid_rate, yfinance close, absolute
-   diff, % diff.
-6. **Chart** — both series overlaid on one time axis over the 1-year window.
-7. **Difference chart + stats** — plot `(yahoo_close - bot_mid_rate)` over time; report
+4. **Comparison table** — last ~10 aligned rows: BOT reference rate, yfinance close,
+   absolute diff, % diff.
+5. **Chart** — both series overlaid on one time axis over the 1-year window.
+6. **Difference chart + stats** — plot `(yahoo_close - bot_ref_rate)` over time; report
    mean, std, and max absolute difference, plus the Pearson correlation between the two
    levels.
-8. **Closing notes (markdown)** — caveat that BOT's `mid_rate` is a once-daily official
-   survey average (banks report rates to BOT, which computes the average) while
-   yfinance's close is a continuously-quoted market snapshot at day-end — so a small,
-   fairly consistent gap between the two is expected behavior, not a data error.
+7. **Closing notes (markdown)** — caveat that BOT's reference rate is a once-daily
+   official calculation (weighted average of interbank USD/THB trades $\geq$1M,
+   published 6pm BKK) while yfinance's close is a continuously-quoted market snapshot at
+   day-end — so a small, fairly consistent gap between the two is expected behavior, not
+   a data error. Also notes both reasons `usd_thb_bot`/`spot_rate` weren't used.
 
 ## Error handling
 
-No additional try/except beyond what `pipeline.py` already provides. If `update("bot")`
-reports a per-series failure (e.g., missing `BOT_CLIENT_ID`), that string is visible in
-the printed status dict, and the subsequent `load("usd_thb_bot")` raises a natural
-`FileNotFoundError`/`KeyError` if no CSV was ever written — consistent with how the
-existing notebooks let missing-key failures surface rather than masking them.
+No try/except around the Yahoo side beyond what `pipeline.py` already provides (a
+per-series failure surfaces in `update("yahoo")`'s returned status dict). The BOT side is
+a single direct `bot_client.reference_rate.daily(...)` call with no wrapping try/except —
+if `BOT_CLIENT_ID` is missing, `Endpoint._resolve_key()` raises `ValueError` naming the
+env var, which is an acceptable hard stop for a single ad-hoc call (this is exactly how
+`BOT_query.ipynb`'s un-wrapped calls, e.g. §1 and §5, already behave).
 
 ## Testing
 
