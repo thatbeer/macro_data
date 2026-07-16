@@ -5,7 +5,7 @@
 A new notebook, `notebooks/commodities_te_query.ipynb`, surveys commodity prices
 organized under Trading Economics' own category taxonomy (Energy, Metals,
 Agricultural, Industrial, Livestock, Index, Electricity) as supplied by the user. The
-full taxonomy names ~102 individual commodities; this notebook fetches real data for
+full taxonomy names 103 individual commodities; this notebook fetches real data for
 whichever of those have a free, identity-verified Yahoo Finance ticker, and documents
 the rest as unavailable with a reason, rather than silently omitting them or
 fabricating data for series with no free source.
@@ -84,14 +84,14 @@ Hydroxide, Silicon, Scrap Steel, Titanium.
 Unavailable: Palm Oil, Rubber, Canola, Wool, Tea, Sunflower Oil, Rapeseed, Barley,
 Potatoes — mostly Bursa Malaysia / regional exchanges Yahoo doesn't mirror.
 
-### Industrial (2 of 27 available)
+### Industrial (2 of 28 available)
 
 | Item | Ticker | Unit |
 |---|---|---|
 | Aluminum | `ALI=F` | USD/metric ton |
 | Palladium | `PA=F` | USD/oz |
 
-Unavailable: the remaining 25 — LME base metals (Lead, Tin, Zinc, Nickel), rare
+Unavailable: the remaining 26 — LME base metals (Lead, Tin, Zinc, Nickel), rare
 earths/minor metals (Rhodium, Molybdenum, Neodymium, Tellurium, Gallium, Germanium,
 Indium, Manganese, Cobalt, Magnesium), petrochemicals/plastics (Polyethylene,
 Polyvinyl, Polypropylene, Synthetic Rubber, Styrene, Sulfur), fertilizers (Urea,
@@ -127,14 +127,14 @@ United Kingdom, Germany, France, Italy, Spain day-ahead power prices trade on
 regional exchanges (EPEX, Nord Pool) with no free/keyless data source. All five are
 documented as unavailable; no code fetches anything for this section.
 
-**Total: 32 of ~102 named items available.**
+**Total: 32 of 103 named items available.**
 
 ## Notebook sections
 
 Matches the simple fetch → table style of `oil_prices_query.ipynb` (not the deeper
 trend-analysis style of `usd_thb_trend_and_indices.ipynb`):
 
-1. **Intro (markdown)** — states purpose and the 32/102 headline coverage number, and
+1. **Intro (markdown)** — states purpose and the 32/103 headline coverage number, and
    why the gap exists (no paid Trading Economics/Platts/Argus/LME feed configured).
 2. **One section per category** (Energy, Metals, Agricultural, Industrial, Livestock,
    Index, Electricity), each:
@@ -146,7 +146,7 @@ trend-analysis style of `usd_thb_trend_and_indices.ipynb`):
    - Markdown note: bullet list of that category's unavailable items with a one-line
      reason
 3. **Coverage summary** — a horizontal bar chart, one bar per category, available vs.
-   unavailable stacked or grouped (32/102 overall called out in the title/caption).
+   unavailable stacked or grouped (32/103 overall called out in the title/caption).
    Built following the `dataviz` skill's guidance (invoked at implementation time,
    before writing this chart cell).
 
@@ -169,10 +169,21 @@ every cell runs end-to-end.
 
 - No historical trend charts, moving averages, or volatility — this is a coverage/
   latest-value survey, not a trend-analysis notebook.
-- No `catalog.yaml` changes and no persisted CSV output — standalone, per the chosen
-  approach; the executed notebook's saved outputs are the record.
+- No `catalog.yaml` changes — standalone, per the chosen approach; only the reference
+  catalog CSV described below is persisted, not a `macro_data`-store series.
 - No attempt to reach 100% coverage via a paid feed (Trading Economics, FMP paid
   tier, Platts/Argus) — out of scope until the user decides to acquire and configure
   one of those keys.
 - No normalized cross-category comparison chart (as in `commodity_prices_query.ipynb`)
   — 32 series on one chart would be unreadable; the coverage bar chart replaces it.
+
+## Addendum: reference catalog CSV (2026-07-16)
+
+Added `notebooks/commodities_te_catalog.csv` alongside the notebook — a flat,
+spreadsheet-friendly reference table (one row per named item, all 103) so a user can
+see at a glance which source/ticker to use for each commodity without opening the
+notebook. Columns: `ticker`, `source` (`"Yahoo Finance"` or blank), `security_name`,
+`description` (unit + exchange for available items; reason it's unavailable
+otherwise), `tag` (the category). This surfaced the Industrial count error corrected
+above (27 → 28) — the CSV's per-category row counts are the authoritative numbers
+going forward.
