@@ -1,0 +1,20 @@
+id,region,source,tag,frequency,name
+T10Y3M,US,fred,leading,daily,10Y-3M Treasury yield spread
+ICSA,US,fred,leading,weekly,Initial jobless claims
+PERMIT,US,fred,leading,monthly,Building permits (new private housing units authorized)
+NEWORDER,US,fred,leading,monthly,Manufacturers' new orders: core capital goods ex-aircraft
+UMCSENT,US,fred,leading,monthly,U. Michigan Consumer Sentiment Index
+AWHMAN,US,fred,leading,monthly,Average weekly hours (manufacturing)
+PAYEMS,US,fred,coincident,monthly,Nonfarm payroll employment
+INDPRO,US,fred,coincident,monthly,Industrial production index
+W875RX1,US,fred,coincident,monthly,Real personal income excluding transfer receipts
+USPHCI,US,fred,coincident,monthly,Coincident Economic Activity Index (composite)
+RSAFS,US,fred,coincident,monthly,Retail sales
+UEMPMEAN,US,fred,lagging,monthly,Average (mean) duration of unemployment
+BUSLOANS,US,fred,lagging,monthly,Commercial & industrial loans outstanding
+MPRIME,US,fred,lagging,monthly,Bank prime loan rate
+CPILFESL,US,fred,lagging,monthly,Core CPI (all items less food & energy)
+ULCNFB,US,fred,lagging,quarterly,Unit labor cost (nonfarm business)
+^SET.BK,Thailand,yfinance,leading,daily,SET Index (Thailand equities)
+NY.GDP.MKTP.KD.ZG,Thailand,worldbank,coincident,annual,GDP growth (annual %)
+FP.CPI.TOTL.ZG,Thailand,worldbank,lagging,annual,CPI inflation (annual %)
