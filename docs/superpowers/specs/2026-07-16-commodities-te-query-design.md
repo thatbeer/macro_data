@@ -183,7 +183,21 @@ Added `notebooks/commodities_te_catalog.csv` alongside the notebook — a flat,
 spreadsheet-friendly reference table (one row per named item, all 103) so a user can
 see at a glance which source/ticker to use for each commodity without opening the
 notebook. Columns: `ticker`, `source` (`"Yahoo Finance"` or blank), `security_name`,
-`description` (unit + exchange for available items; reason it's unavailable
-otherwise), `tag` (the category). This surfaced the Industrial count error corrected
-above (27 → 28) — the CSV's per-category row counts are the authoritative numbers
-going forward.
+`instrument_type` (`Future` / `Spot` / `Index`), `type_basis` (`Yahoo-verified` or
+`Inferred`), `description` (unit + exchange for available items; reason it's
+unavailable otherwise), `tag` (the category). This surfaced the Industrial count
+error corrected above (27 → 28) — the CSV's per-category row counts are the
+authoritative numbers going forward.
+
+`instrument_type` for the 32 available items comes from Yahoo's own `quoteType`
+metadata (`FUTURE`/`INDEX`, queried live via `yf.Ticker(t).info`) — three tickers
+(`LTH=F`, `TIO=F`, `CT=F`) report `ALTSYMBOL` instead, but are classified `Future`
+based on their documented exchange contract specs (CME lithium hydroxide swap,
+SGX/CME iron ore swap, ICE Cotton No. 2), not left as a raw Yahoo tag. For the 71
+unavailable items there is no live source to query, so `instrument_type` is
+*inferred* from known market structure (does a standardized exchange — LME, ICE,
+CME, Bursa Malaysia, SGX, Euronext, Zhengzhou — list a futures contract for it, vs.
+a physical/OTC benchmark assessment with none) rather than confirmed against Trading
+Economics' own classification, which this project has no API access to verify
+against. `type_basis` marks this distinction explicitly so the CSV doesn't overstate
+its own confidence.

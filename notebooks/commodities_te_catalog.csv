@@ -1,104 +1,104 @@
-ticker,source,security_name,description,tag
-CL=F,Yahoo Finance,Crude Oil (WTI),"WTI crude oil futures (NYMEX), USD/bbl",Energy
-BZ=F,Yahoo Finance,Brent,"Brent crude oil futures (ICE), USD/bbl",Energy
-NG=F,Yahoo Finance,Natural Gas,"Henry Hub natural gas futures (NYMEX), USD/MMBtu",Energy
-RB=F,Yahoo Finance,Gasoline,"RBOB gasoline futures (NYMEX), USD/gal",Energy
-HO=F,Yahoo Finance,Heating Oil,"Heating oil futures (NYMEX), USD/gal",Energy
-,,Coal,Newcastle/API thermal coal benchmark - no free ticker; needs Trading Economics/Platts/Argus.,Energy
-,,TTF Gas,"Dutch TTF natural gas hub price - OTC European benchmark, no free ticker.",Energy
-,,UK Gas,"UK NBP natural gas hub price - OTC benchmark, no free ticker.",Energy
-,,Ethanol,"Denatured fuel ethanol futures - checked EH=F on Yahoo, delisted/no data.",Energy
-,,Naphtha,"Naphtha petrochemical feedstock - OTC benchmark, no free ticker.",Energy
-,,Propane,"Propane (Mont Belvieu) - OTC benchmark, no free ticker.",Energy
-,,Uranium,"Uranium spot/futures - checked UX=F on Yahoo, delisted/no data.",Energy
-,,Methanol,"Methanol - OTC petrochemical benchmark, no free ticker.",Energy
-,,Coking Coal,Metallurgical/coking coal benchmark - no free ticker.,Energy
-,,LNG JKM,"Japan-Korea Marker LNG benchmark - OTC/Platts assessment, no free ticker.",Energy
-,,German Gas,"German gas hub price (THE) - OTC benchmark, no free ticker.",Energy
-,,Urals Oil,"Russian Urals crude blend - OTC/Platts assessment, no free ticker.",Energy
-GC=F,Yahoo Finance,Gold,"Gold futures (COMEX), USD/troy oz",Metals
-SI=F,Yahoo Finance,Silver,"Silver futures (COMEX), USD/troy oz",Metals
-HG=F,Yahoo Finance,Copper,"Copper futures (COMEX), USD/lb",Metals
-,,Steel,Generic steel benchmark - HRC Steel (below) is the only steel contract Yahoo Finance carries.,Metals
-LTH=F,Yahoo Finance,Lithium,"Lithium Hydroxide CIF CJK futures (CME/Fastmarkets), USD/kg",Metals
-,,Iron Ore CNY,"Dalian Commodity Exchange RMB-denominated iron ore futures - no free ticker (see Iron Ore, USD, below).",Metals
-PL=F,Yahoo Finance,Platinum,"Platinum futures (NYMEX), USD/troy oz",Metals
-,,Cobalt Hydroxide,"Cobalt hydroxide payable - Fastmarkets assessment, no free ticker.",Metals
-HRC=F,Yahoo Finance,HRC Steel,"US Midwest domestic hot-rolled coil steel futures (CME), USD/short ton",Metals
-TIO=F,Yahoo Finance,Iron Ore,"Iron ore 62% Fe CFR China futures (SGX/TSI), USD/dry metric ton",Metals
-,,Silicon,Metallurgical-grade silicon - no free ticker.,Metals
-,,Scrap Steel,Steel scrap (e.g. CME Busheling) - no free ticker found on Yahoo.,Metals
-,,Titanium,Titanium sponge/dioxide - no free ticker.,Metals
-ZS=F,Yahoo Finance,Soybeans,"Soybean futures (CBOT), cents/bu",Agricultural
-ZW=F,Yahoo Finance,Wheat,"Chicago SRW wheat futures (CBOT), cents/bu",Agricultural
-LBR=F,Yahoo Finance,Lumber,"Lumber futures (CME), USD/1,000 board ft",Agricultural
-,,Palm Oil,Bursa Malaysia crude palm oil futures - not mirrored on Yahoo Finance.,Agricultural
-CSC=F,Yahoo Finance,Cheese,"Cash-settled cheese futures (CME), cents/lb",Agricultural
-DC=F,Yahoo Finance,Milk,"Class III milk futures (CME), USD/cwt",Agricultural
-,,Rubber,TOCOM/SICOM natural rubber futures - no free ticker.,Agricultural
-OJ=F,Yahoo Finance,Orange Juice,"Frozen concentrated orange juice futures (ICE), cents/lb",Agricultural
-KC=F,Yahoo Finance,Coffee,"Arabica coffee futures (ICE), cents/lb",Agricultural
-CT=F,Yahoo Finance,Cotton,"Cotton No. 2 futures (ICE), cents/lb",Agricultural
-ZR=F,Yahoo Finance,Rice,"Rough rice futures (CBOT), USD/cwt",Agricultural
-,,Canola,"ICE Canada canola futures - checked RS=F on Yahoo, delisted/no data.",Agricultural
-ZO=F,Yahoo Finance,Oat,"Oat futures (CBOT), cents/bu",Agricultural
-,,Wool,AWEX wool market indicator - no free ticker.,Agricultural
-SB=F,Yahoo Finance,Sugar,"Sugar No. 11 futures (ICE), cents/lb",Agricultural
-CC=F,Yahoo Finance,Cocoa,"Cocoa futures (ICE), USD/metric ton",Agricultural
-,,Tea,Tea auction price (Mombasa/Colombo) - no free ticker.,Agricultural
-,,Sunflower Oil,"Sunflower oil - OTC/Black Sea benchmark, no free ticker.",Agricultural
-,,Rapeseed,"ICE Canada/Euronext rapeseed futures - no free ticker (Canola, also unavailable, is the closest proxy).",Agricultural
-,,Barley,Feed/malting barley - no free ticker.,Agricultural
-CB=F,Yahoo Finance,Butter,"Cash-settled butter futures (CME), cents/lb",Agricultural
-,,Potatoes,Potato futures (Euronext) - no free ticker.,Agricultural
-ZC=F,Yahoo Finance,Corn,"Corn futures (CBOT), cents/bu",Agricultural
-,,Bitumen,Asphalt/bitumen benchmark - no free ticker.,Industrial
-,,Cobalt,LME cobalt - no free ticker.,Industrial
-,,Lead,LME lead - no free ticker.,Industrial
-ALI=F,Yahoo Finance,Aluminum,"Aluminum futures (COMEX), USD/metric ton",Industrial
-,,Tin,LME tin - no free ticker.,Industrial
-,,Zinc,"LME zinc - checked ZN=F on Yahoo, which is actually the CBOT 10-Year T-Note future, not zinc; no genuine free ticker exists.",Industrial
-,,Nickel,LME nickel - no free ticker.,Industrial
-,,Molybdenum,"Molybdenum oxide - checked MO=F on Yahoo, delisted/no data.",Industrial
-PA=F,Yahoo Finance,Palladium,"Palladium futures (NYMEX), USD/troy oz",Industrial
-,,Rhodium,"Rhodium - spot-only market, no futures/ticker on Yahoo.",Industrial
-,,Phosphorus,Yellow phosphorus - no free ticker.,Industrial
-,,Polyethylene,Polyethylene (HDPE/LDPE) - no free ticker.,Industrial
-,,Polyvinyl,Polyvinyl chloride (PVC) - no free ticker.,Industrial
-,,Polypropylene,Polypropylene - no free ticker.,Industrial
-,,Synthetic Rubber,Synthetic rubber (SBR/BR) - no free ticker.,Industrial
-,,Soda Ash,Soda ash (sodium carbonate) - no free ticker.,Industrial
-,,Neodymium,Neodymium rare earth - no free ticker.,Industrial
-,,Styrene,Styrene monomer - no free ticker.,Industrial
-,,Sulfur,Sulfur - no free ticker.,Industrial
-,,Tellurium,Tellurium minor metal - no free ticker.,Industrial
-,,Urea,Urea fertilizer - no free ticker.,Industrial
-,,Di-ammonium,Diammonium phosphate (DAP) fertilizer - no free ticker.,Industrial
-,,Magnesium,Magnesium metal - no free ticker.,Industrial
-,,Gallium,Gallium minor metal - no free ticker.,Industrial
-,,Germanium,Germanium minor metal - no free ticker.,Industrial
-,,Manganese,Manganese ore/alloy - no free ticker.,Industrial
-,,Indium,Indium minor metal - no free ticker.,Industrial
-,,Kraft Pulp,Kraft pulp (paper industry) - no free ticker.,Industrial
-GF=F,Yahoo Finance,Feeder Cattle,"Feeder cattle futures (CME), cents/lb",Livestock
-LE=F,Yahoo Finance,Live Cattle,"Live cattle futures (CME), cents/lb",Livestock
-HE=F,Yahoo Finance,Lean Hogs,"Lean hogs futures (CME), cents/lb",Livestock
-,,Beef,Boxed beef cutout value - no futures-exchange proxy on Yahoo.,Livestock
-,,Poultry,Broiler/poultry price - no free ticker.,Livestock
-,,Eggs US,US egg price (e.g. CME egg futures) - no free ticker found on Yahoo.,Livestock
-,,Eggs CH,China egg price - no free ticker.,Livestock
-,,Salmon,"Norwegian salmon price - trades on Fish Pool, not mirrored on Yahoo.",Livestock
-,,CRB Index,"Thomson Reuters/CoreCommodity CRB Index - checked ^CRB and CRBQ on Yahoo, neither resolves.",Index
-^SPGSCI,Yahoo Finance,GSCI,"S&P GSCI commodity index, index points",Index
-,,SSE Commodity Index,Shanghai Stock Exchange commodity index - no free ticker.,Index
-,,World Container Index,Drewry World Container Index (freight) - no free ticker.,Index
-,,Containerized Freight Index,Container freight rate index (e.g. SCFI) - no free ticker.,Index
-,,EU Carbon Permits,EU ETS carbon allowance (EUA) futures - no free ticker on Yahoo.,Index
-,,Wind Energy Index,"No literal wind-energy commodity index on Yahoo; closest is thematic ETF FAN, not equivalent.",Index
-,,Nuclear Energy Index,"No literal nuclear-energy commodity index on Yahoo; closest is thematic ETF NLR, not equivalent.",Index
-,,Solar Energy Index,"No literal solar-energy commodity index on Yahoo; closest is thematic ETF TAN, not equivalent.",Index
-,,United Kingdom,UK day-ahead power price (EPEX/N2EX) - no free/keyless source.,Electricity
-,,Germany,German day-ahead power price (EPEX) - no free/keyless source.,Electricity
-,,France,French day-ahead power price (EPEX) - no free/keyless source.,Electricity
-,,Italy,Italian day-ahead power price (GME/PUN) - no free/keyless source.,Electricity
-,,Spain,Spanish day-ahead power price (OMIE) - no free/keyless source.,Electricity
+ticker,source,security_name,instrument_type,type_basis,description,tag
+CL=F,Yahoo Finance,Crude Oil (WTI),Future,Yahoo-verified,"WTI crude oil futures (NYMEX), USD/bbl",Energy
+BZ=F,Yahoo Finance,Brent,Future,Yahoo-verified,"Brent crude oil futures (ICE), USD/bbl",Energy
+NG=F,Yahoo Finance,Natural Gas,Future,Yahoo-verified,"Henry Hub natural gas futures (NYMEX), USD/MMBtu",Energy
+RB=F,Yahoo Finance,Gasoline,Future,Yahoo-verified,"RBOB gasoline futures (NYMEX), USD/gal",Energy
+HO=F,Yahoo Finance,Heating Oil,Future,Yahoo-verified,"Heating oil futures (NYMEX), USD/gal",Energy
+,,Coal,Future,Inferred,"Newcastle/API thermal coal benchmark; ICE lists Newcastle Coal futures, but no free ticker.",Energy
+,,TTF Gas,Future,Inferred,"Dutch TTF gas hub; ICE lists TTF Gas futures (Europe's main gas benchmark), but no free ticker.",Energy
+,,UK Gas,Future,Inferred,"UK NBP gas hub; ICE lists UK NBP Natural Gas futures, but no free ticker.",Energy
+,,Ethanol,Future,Inferred,"Denatured fuel ethanol futures (CME) - checked EH=F on Yahoo, delisted/no data.",Energy
+,,Naphtha,Future,Inferred,"ICE lists Naphtha Cargoes CIF NWE futures, but no free ticker.",Energy
+,,Propane,Future,Inferred,"ICE/CME list Mont Belvieu Propane futures, but no free ticker.",Energy
+,,Uranium,Future,Inferred,"CME/NYMEX Uranium futures (UxC-referenced) - checked UX=F on Yahoo, delisted/no data.",Energy
+,,Methanol,Future,Inferred,"Zhengzhou Commodity Exchange lists Methanol futures, but no free/Western ticker.",Energy
+,,Coking Coal,Future,Inferred,"SGX lists Coking Coal futures, but no free ticker.",Energy
+,,LNG JKM,Future,Inferred,"CME lists LNG JKM futures (cash-settled to Platts JKM), but no free ticker.",Energy
+,,German Gas,Future,Inferred,"ICE/EEX list THE (German gas hub) futures, but no free ticker.",Energy
+,,Urals Oil,Spot,Inferred,Platts/Argus differential assessment vs. Brent; no standalone exchange futures contract.,Energy
+GC=F,Yahoo Finance,Gold,Future,Yahoo-verified,"Gold futures (COMEX), USD/troy oz",Metals
+SI=F,Yahoo Finance,Silver,Future,Yahoo-verified,"Silver futures (COMEX), USD/troy oz",Metals
+HG=F,Yahoo Finance,Copper,Future,Yahoo-verified,"Copper futures (COMEX), USD/lb",Metals
+,,Steel,Spot,Inferred,Generic steel benchmark - HRC Steel (below) is the only steel contract Yahoo Finance carries.,Metals
+LTH=F,Yahoo Finance,Lithium,Future,Yahoo-verified,"Lithium Hydroxide CIF CJK futures (CME/Fastmarkets), USD/kg",Metals
+,,Iron Ore CNY,Future,Inferred,"Dalian Commodity Exchange RMB-denominated iron ore futures - no free ticker (see Iron Ore, USD, below).",Metals
+PL=F,Yahoo Finance,Platinum,Future,Yahoo-verified,"Platinum futures (NYMEX), USD/troy oz",Metals
+,,Cobalt Hydroxide,Spot,Inferred,"Cobalt hydroxide payable - Fastmarkets assessment, no futures contract, no free ticker.",Metals
+HRC=F,Yahoo Finance,HRC Steel,Future,Yahoo-verified,"US Midwest domestic hot-rolled coil steel futures (CME), USD/short ton",Metals
+TIO=F,Yahoo Finance,Iron Ore,Future,Yahoo-verified,"Iron ore 62% Fe CFR China futures (SGX/TSI), USD/dry metric ton",Metals
+,,Silicon,Spot,Inferred,"Metallurgical-grade silicon - no standardized futures market, no free ticker.",Metals
+,,Scrap Steel,Future,Inferred,"CME lists Busheling Scrap futures, but no free ticker.",Metals
+,,Titanium,Spot,Inferred,"Titanium sponge/dioxide - no standardized futures market, no free ticker.",Metals
+ZS=F,Yahoo Finance,Soybeans,Future,Yahoo-verified,"Soybean futures (CBOT), cents/bu",Agricultural
+ZW=F,Yahoo Finance,Wheat,Future,Yahoo-verified,"Chicago SRW wheat futures (CBOT), cents/bu",Agricultural
+LBR=F,Yahoo Finance,Lumber,Future,Yahoo-verified,"Lumber futures (CME), USD/1,000 board ft",Agricultural
+,,Palm Oil,Future,Inferred,Bursa Malaysia FCPO crude palm oil futures - not mirrored on Yahoo Finance.,Agricultural
+CSC=F,Yahoo Finance,Cheese,Future,Yahoo-verified,"Cash-settled cheese futures (CME), cents/lb",Agricultural
+DC=F,Yahoo Finance,Milk,Future,Yahoo-verified,"Class III milk futures (CME), USD/cwt",Agricultural
+,,Rubber,Future,Inferred,TOCOM/SICOM natural rubber futures - no free ticker.,Agricultural
+OJ=F,Yahoo Finance,Orange Juice,Future,Yahoo-verified,"Frozen concentrated orange juice futures (ICE), cents/lb",Agricultural
+KC=F,Yahoo Finance,Coffee,Future,Yahoo-verified,"Arabica coffee futures (ICE), cents/lb",Agricultural
+CT=F,Yahoo Finance,Cotton,Future,Yahoo-verified,"Cotton No. 2 futures (ICE), cents/lb",Agricultural
+ZR=F,Yahoo Finance,Rice,Future,Yahoo-verified,"Rough rice futures (CBOT), USD/cwt",Agricultural
+,,Canola,Future,Inferred,"ICE Canada canola futures - checked RS=F on Yahoo, delisted/no data.",Agricultural
+ZO=F,Yahoo Finance,Oat,Future,Yahoo-verified,"Oat futures (CBOT), cents/bu",Agricultural
+,,Wool,Spot,Inferred,"AWEX Eastern Market Indicator - physical auction price, no free ticker.",Agricultural
+SB=F,Yahoo Finance,Sugar,Future,Yahoo-verified,"Sugar No. 11 futures (ICE), cents/lb",Agricultural
+CC=F,Yahoo Finance,Cocoa,Future,Yahoo-verified,"Cocoa futures (ICE), USD/metric ton",Agricultural
+,,Tea,Spot,Inferred,Tea auction price (Mombasa/Colombo) - no free ticker.,Agricultural
+,,Sunflower Oil,Spot,Inferred,"Black Sea FOB benchmark assessment - no major standardized futures, no free ticker.",Agricultural
+,,Rapeseed,Future,Inferred,Euronext MATIF rapeseed futures - no free ticker.,Agricultural
+,,Barley,Spot,Inferred,"Feed/malting barley benchmark - thin/illiquid futures markets, no free ticker.",Agricultural
+CB=F,Yahoo Finance,Butter,Future,Yahoo-verified,"Cash-settled butter futures (CME), cents/lb",Agricultural
+,,Potatoes,Future,Inferred,Euronext potato futures - no free ticker.,Agricultural
+ZC=F,Yahoo Finance,Corn,Future,Yahoo-verified,"Corn futures (CBOT), cents/bu",Agricultural
+,,Bitumen,Spot,Inferred,"Asphalt/bitumen benchmark - no standardized futures, no free ticker.",Industrial
+,,Cobalt,Future,Inferred,LME Cobalt futures/forwards - no free ticker.,Industrial
+,,Lead,Future,Inferred,LME Lead futures/forwards - no free ticker.,Industrial
+ALI=F,Yahoo Finance,Aluminum,Future,Yahoo-verified,"Aluminum futures (COMEX), USD/metric ton",Industrial
+,,Tin,Future,Inferred,LME Tin futures/forwards - no free ticker.,Industrial
+,,Zinc,Future,Inferred,"LME Zinc futures/forwards - checked ZN=F on Yahoo, which is actually the CBOT 10-Year T-Note future, not zinc; no genuine free ticker exists.",Industrial
+,,Nickel,Future,Inferred,LME Nickel futures/forwards - no free ticker.,Industrial
+,,Molybdenum,Spot,Inferred,"Metal Bulletin/Fastmarkets molybdenum oxide assessment - checked MO=F on Yahoo, delisted/no data.",Industrial
+PA=F,Yahoo Finance,Palladium,Future,Yahoo-verified,"Palladium futures (NYMEX), USD/troy oz",Industrial
+,,Rhodium,Spot,Inferred,"Physical market only, no listed futures exchange, no free ticker.",Industrial
+,,Phosphorus,Spot,Inferred,Yellow phosphorus benchmark - no free ticker.,Industrial
+,,Polyethylene,Spot,Inferred,Polyethylene (HDPE/LDPE) benchmark - no free ticker.,Industrial
+,,Polyvinyl,Spot,Inferred,Polyvinyl chloride (PVC) benchmark - no free ticker.,Industrial
+,,Polypropylene,Spot,Inferred,Polypropylene benchmark - no free ticker.,Industrial
+,,Synthetic Rubber,Spot,Inferred,Synthetic rubber (SBR/BR) benchmark - no free ticker.,Industrial
+,,Soda Ash,Spot,Inferred,Soda ash (sodium carbonate) benchmark - no free ticker.,Industrial
+,,Neodymium,Spot,Inferred,"Rare earth minor metal - no futures market, no free ticker.",Industrial
+,,Styrene,Spot,Inferred,Styrene monomer benchmark - no free ticker.,Industrial
+,,Sulfur,Spot,Inferred,Sulfur benchmark - no free ticker.,Industrial
+,,Tellurium,Spot,Inferred,"Minor metal - no futures market, no free ticker.",Industrial
+,,Urea,Future,Inferred,"CME lists Urea (Granular) FOB Middle East futures, but no free ticker.",Industrial
+,,Di-ammonium,Future,Inferred,"CME lists DAP (NOLA) futures, but no free ticker.",Industrial
+,,Magnesium,Spot,Inferred,Magnesium metal benchmark - no free ticker.,Industrial
+,,Gallium,Spot,Inferred,"Minor metal - no futures market, no free ticker.",Industrial
+,,Germanium,Spot,Inferred,"Minor metal - no futures market, no free ticker.",Industrial
+,,Manganese,Spot,Inferred,Manganese ore/alloy benchmark - no free ticker.,Industrial
+,,Indium,Spot,Inferred,"Minor metal - no futures market, no free ticker.",Industrial
+,,Kraft Pulp,Spot,Inferred,Kraft pulp (paper industry) benchmark - no free ticker.,Industrial
+GF=F,Yahoo Finance,Feeder Cattle,Future,Yahoo-verified,"Feeder cattle futures (CME), cents/lb",Livestock
+LE=F,Yahoo Finance,Live Cattle,Future,Yahoo-verified,"Live cattle futures (CME), cents/lb",Livestock
+HE=F,Yahoo Finance,Lean Hogs,Future,Yahoo-verified,"Lean hogs futures (CME), cents/lb",Livestock
+,,Beef,Spot,Inferred,"Boxed beef cutout value - no futures-exchange proxy, no free ticker.",Livestock
+,,Poultry,Spot,Inferred,Broiler/poultry price benchmark - no free ticker.,Livestock
+,,Eggs US,Spot,Inferred,"US egg price benchmark - no active futures market, no free ticker.",Livestock
+,,Eggs CH,Spot,Inferred,China egg price benchmark - no free ticker.,Livestock
+,,Salmon,Future,Inferred,"Fish Pool (Norway) lists Salmon futures, but no free ticker.",Livestock
+,,CRB Index,Index,Inferred,"Thomson Reuters/CoreCommodity CRB Index - checked ^CRB and CRBQ on Yahoo, neither resolves.",Index
+^SPGSCI,Yahoo Finance,GSCI,Index,Yahoo-verified,"S&P GSCI commodity index, index points",Index
+,,SSE Commodity Index,Index,Inferred,Shanghai Stock Exchange commodity index - no free ticker.,Index
+,,World Container Index,Index,Inferred,Drewry World Container Index (freight) - no free ticker.,Index
+,,Containerized Freight Index,Index,Inferred,Container freight rate index (e.g. SCFI) - no free ticker.,Index
+,,EU Carbon Permits,Future,Inferred,ICE EUA (EU ETS carbon allowance) futures - no free ticker on Yahoo.,Index
+,,Wind Energy Index,Index,Inferred,"No literal wind-energy commodity index on Yahoo; closest is thematic ETF FAN, not equivalent.",Index
+,,Nuclear Energy Index,Index,Inferred,"No literal nuclear-energy commodity index on Yahoo; closest is thematic ETF NLR, not equivalent.",Index
+,,Solar Energy Index,Index,Inferred,"No literal solar-energy commodity index on Yahoo; closest is thematic ETF TAN, not equivalent.",Index
+,,United Kingdom,Spot,Inferred,UK day-ahead power price (EPEX/N2EX) - no free/keyless source.,Electricity
+,,Germany,Spot,Inferred,German day-ahead power price (EPEX) - no free/keyless source.,Electricity
+,,France,Spot,Inferred,French day-ahead power price (EPEX) - no free/keyless source.,Electricity
+,,Italy,Spot,Inferred,Italian day-ahead power price (GME/PUN) - no free/keyless source.,Electricity
+,,Spain,Spot,Inferred,Spanish day-ahead power price (OMIE) - no free/keyless source.,Electricity
