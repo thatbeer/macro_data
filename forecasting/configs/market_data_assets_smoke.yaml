@@ -22,10 +22,11 @@ dataset:
 data_sources:
   modeling_base:
     type: parquet
-    # Relative to the CLI's cwd at invocation time (AIML-ML-Multi-Forecast-Engine/),
-    # not relative to this file. Generate it first with:
-    #   python forecasting/generate_synthetic_sample.py
-    path: ../Macro_data/forecasting/data/synthetic_forecast_assets.parquet
+    # Absolute path -- AIML-ML-Multi-Forecast-Engine is nested inside this repo's
+    # checkout (Macro_data/AIML-ML-Multi-Forecast-Engine), not a sibling directory,
+    # so a relative path here would be fragile across checkouts/worktrees. Generate
+    # this file first with: python forecasting/generate_synthetic_sample.py
+    path: D:/MyOffice/AXONS/macro_data-market-data-schema/forecasting/data/synthetic_forecast_assets.parquet
 
 preprocessing:
   densify_grid: true

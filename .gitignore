@@ -4,6 +4,7 @@ __pycache__/
 .venv/
 data/*
 !data/.gitkeep
+forecasting/data/
 .pytest_cache/
 build/
 dist/

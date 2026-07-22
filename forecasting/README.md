@@ -23,20 +23,44 @@ full design and its non-goals.
 
 ## Running the smoke test
 
-```bash
-# 1. From this repo's root, generate the synthetic sample:
-python forecasting/generate_synthetic_sample.py
+Verified working end to end on 2026-07-22 (Windows). From this repo's root:
 
-# 2. From AIML-ML-Multi-Forecast-Engine's own root (checked out as a sibling
-#    directory -- paths inside the config are resolved relative to this cwd):
-cd AIML-ML-Multi-Forecast-Engine
-uv run horizons run --mode smoke --config ../Macro_data/forecasting/configs/market_data_assets_smoke.yaml
+```bash
+python forecasting/generate_synthetic_sample.py
 ```
 
-A successful run writes `AIML-ML-Multi-Forecast-Engine/artifacts/market_data_assets_smoke/predictions.parquet`
-and prints a leaderboard summary. This validates the `dataset`/`keys`/`horizon`
-mapping end to end -- the predictions themselves are meaningless (synthetic
-random-walk data), not a real forecast.
+Then from `AIML-ML-Multi-Forecast-Engine`'s own root, wherever it's checked out (it
+may be nested inside this repo, e.g. `Macro_data/AIML-ML-Multi-Forecast-Engine/`, or a
+true sibling directory -- the `--config` path works either way since it's an absolute
+path):
+
+```bash
+cd AIML-ML-Multi-Forecast-Engine
+uv sync   # first time only
+PYTHONIOENCODING=utf-8 uv run horizons run --mode smoke --config /absolute/path/to/forecasting/configs/market_data_assets_smoke.yaml
+```
+
+`data_sources.modeling_base.path` inside the smoke config is an absolute path (not
+relative to cwd) since the two repos aren't guaranteed to be laid out as siblings.
+
+**Windows gotcha:** without `PYTHONIOENCODING=utf-8`, the run completes successfully
+(all artifacts are written) but then crashes with `UnicodeEncodeError: 'charmap'
+codec can't encode characters...` while printing the final leaderboard to the
+console -- the legacy Windows terminal's `cp1252` encoding can't render a character
+`rich` writes. This is cosmetic (every output file is already on disk by that point)
+but the env var avoids it entirely and gets a clean exit code 0.
+
+A successful smoke run does **not** write `output.predictions.path` (that's a
+production/inference-mode artifact) -- in `smoke`/`experiment` mode the real outputs
+land under `artifacts/market_data_assets_smoke/_smoke/`: `leaderboard.parquet`,
+`test_eval.parquet` (aggregate CV metrics), `champions_manifest.json`, per-horizon
+feature caches in `_horizon_cache/`, and diagnostic plots in `viz/` -- including
+`error_by_catalog_id.png` and `error_by_domain_table.png`, which is direct
+confirmation the `item`/`location` grain mapping below was picked up correctly (all
+15 synthetic `catalog_id`s across all 3 `domain_table` values flowed through feature
+engineering, CV, and evaluation). The predictions themselves are meaningless
+(synthetic random-walk data), not a real forecast -- this run validates the
+`dataset`/`keys`/`horizon` mapping, nothing more.
 
 ## Known limitation: the item x location grain
 
