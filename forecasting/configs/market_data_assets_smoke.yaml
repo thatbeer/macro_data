@@ -1,0 +1,121 @@
+# Smoke-tests the market_data -> forecast_assets -> AIML-ML-Multi-Forecast-Engine
+# mapping against synthetic data (forecasting/generate_synthetic_sample.py) --
+# market_data has no real rows yet. See
+# docs/superpowers/specs/2026-07-22-forecast-layer-integration-design.md.
+#
+# Run from inside AIML-ML-Multi-Forecast-Engine:
+#   uv run horizons run --mode smoke --config ../Macro_data/forecasting/configs/market_data_assets_smoke.yaml
+
+mode: experiment
+
+experiment_name: market_data_assets_smoke
+artifacts_dir: artifacts/market_data_assets_smoke
+
+dataset:
+  target: value
+  date: date
+  freq: "D"
+  keys:
+    item: catalog_id
+    location: domain_table
+
+data_sources:
+  modeling_base:
+    type: parquet
+    # Absolute path -- AIML-ML-Multi-Forecast-Engine is nested inside this repo's
+    # checkout (Macro_data/AIML-ML-Multi-Forecast-Engine), not a sibling directory,
+    # so a relative path here would be fragile across checkouts/worktrees. Generate
+    # this file first with: python forecasting/generate_synthetic_sample.py
+    path: D:/MyOffice/AXONS/macro_data-market-data-schema/forecasting/data/synthetic_forecast_assets.parquet
+
+preprocessing:
+  densify_grid: true
+  detrend:
+    mode: normal
+    window: 28
+  normalize:
+    enabled: false
+  postprocessing:
+    clip_negative: true
+    round_to_integer: false
+
+features:
+  calendar:
+    enabled: true
+  events:
+    enabled: false
+  hierarchical:
+    enabled: false
+  matrix_features:
+    enabled: true
+    lags:
+      target: [1, 7, 14, 30]
+    rolling_means: [7, 30]
+    ewma_alphas: [0.1]
+  cyclical:
+    enabled: false
+  volatility:
+    enabled: false
+  external: []
+
+horizon:
+  horizons: [1, 7, 30]
+  unit: days
+  architectures: [direct]
+
+validation:
+  strategy: expanding_window
+  n_folds: 1
+  window_size_days: 90
+  test_days: 30
+  runway_days: 30
+
+tuning:
+  enabled: false
+
+models:
+  selection_metric: mae
+  lightgbm:
+    enabled: true
+    num_boost_round: 50
+    early_stopping_rounds: 10
+    base_params:
+      boosting_type: gbdt
+      learning_rate: 0.05
+      random_state: 42
+      verbose: -1
+      n_jobs: -1
+      feature_pre_filter: false
+    variants:
+      - name: lgb_l1
+  xgboost:
+    enabled: false
+  baseline:
+    enabled: false
+
+output:
+  predictions:
+    type: parquet
+    path: artifacts/market_data_assets_smoke/predictions.parquet
+
+interpretability:
+  shap:
+    enabled: false
+
+memory:
+  budget_gb: 8.0
+  warn_at_fraction: 0.75
+  abort_at_fraction: 0.90
+  warn_only: true
+
+cache:
+  enabled: false
+  post_horizon_path: null
+  overwrite: false
+
+smoke:
+  sample_n_series: 15
+  n_folds: 1
+  n_trials: 1
+  horizons: [1, 7, 30]
+  architectures: [direct]

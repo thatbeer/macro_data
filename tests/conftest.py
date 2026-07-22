@@ -1,6 +1,9 @@
 import sys
 from pathlib import Path
 
-SRC = Path(__file__).resolve().parent.parent / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
+ROOT = Path(__file__).resolve().parent.parent
+SRC = ROOT / "src"
+FORECASTING = ROOT / "forecasting"
+for path in (SRC, FORECASTING):
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
